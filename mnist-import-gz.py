@@ -13,5 +13,8 @@ print(bytes)
 #Adapted from:
 #	https://docs.python.org/3/library/stdtypes.html#int.from_bytes
 x = int.from_bytes(bytes, byteorder = 'big')
-print(x)
+print("Big endian decoded value: %d" % (x))
+
+y = int.from_bytes(bytes, byteorder = 'little')
+print("Little endian decoded value: %d" % (y))
 f.close()
