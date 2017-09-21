@@ -3,7 +3,10 @@
 #import gzip library
 import gzip
 
-f = gzip.open('data/train-labels-idx1-ubyte.gz', 'rb')
-firstByte = f.read(1)
+#dataPath = 'data/train-labels-idx1-ubyte.gz'
+dataPath = 'data/train-images-idx3-ubyte.gz'
+
+f = gzip.open(dataPath, 'rb')
+firstByte = f.read(4)
 print(firstByte)
 f.close()
