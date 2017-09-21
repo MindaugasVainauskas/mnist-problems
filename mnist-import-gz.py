@@ -1,4 +1,5 @@
-#Adapted from https://stackoverflow.com/questions/12902540/read-from-a-gzip-file-in-python
+#Adapted from: 
+#	https://stackoverflow.com/questions/12902540/read-from-a-gzip-file-in-python
 
 #import gzip library
 import gzip
@@ -7,6 +8,8 @@ import gzip
 dataPath = 'data/train-images-idx3-ubyte.gz'
 
 f = gzip.open(dataPath, 'rb')
-firstByte = f.read(4)
-print(firstByte)
+bytes = f.read(4)
+print(bytes)
+x = int.from_bytes(bytes, byteorder = 'big')
+print(x)
 f.close()
