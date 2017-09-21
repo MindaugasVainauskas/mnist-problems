@@ -10,6 +10,8 @@ dataPath = 'data/train-images-idx3-ubyte.gz'
 f = gzip.open(dataPath, 'rb')
 bytes = f.read(4)
 print(bytes)
+#Adapted from:
+#	https://docs.python.org/3/library/stdtypes.html#int.from_bytes
 x = int.from_bytes(bytes, byteorder = 'big')
 print(x)
 f.close()
