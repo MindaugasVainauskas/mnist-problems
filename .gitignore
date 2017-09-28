@@ -1,3 +1,6 @@
+#Ignore image files
+.png
+
 #Ignore Windows files
 # Windows thumbnail cache files
 Thumbs.db
