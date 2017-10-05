@@ -4,47 +4,20 @@
 #import gzip library
 import gzip
 import numpy as np
-
-# dataPath = 'data/train-labels-idx1-ubyte.gz'
-# dataPath = 'data/train-images-idx3-ubyte.gz'
-
-# def read_labels_from_file(fPath):
-	# with gzip.open(fPath, 'rb') as f:
-		# mNum= f.read(4)
-		# mNum = int.from_bytes(mNum, 'big')
-		# print("Magic number: ", mNum)
-		
-		# nolab = f.read(4)
-		# nolab = int.from_bytes(nolab, 'big')
-		# print("Label amount: ", nolab)
-		
-		# labels = [f.read(1) for i in range(nolab)]
-		# labels = [int.from_bytes(label, 'big') for label in labels]
-		
-		# return labels
-	# f.close()
-	
-# train_labels = read_labels_from_file('data/train-labels-idx1-ubyte.gz')
-# test_labels = read_labels_from_file('data/t10k-labels-idx1-ubyte.gz')
-
+import struct
 
 def read_images_from_file(fPath):
 	with gzip.open(fPath, 'rb') as f:
-		mNum= f.read(4)
-		mNum = int.from_bytes(mNum, 'big')
-		print("Magic number: ", mNum)
+	
+		#This line is adapted from
+		#https://gist.github.com/akesling/5358964#file-mnist-py-L26
+		#Reason being it writes out data in single line instead of 8
+		mNum, imgNum, noRows, noCols = struct.unpack(">IIII", f.read(16))
 		
-		imgNum = f.read(4)
-		imgNum = int.from_bytes(imgNum, 'big')
-		print("Image amount: ", imgNum)
-		
-		noRows = f.read(4)
-		noRows = int.from_bytes(noRows, 'big')
-		print("Row number: ", noRows)
-		
-		noCols = f.read(4)
-		noCols = int.from_bytes(noCols, 'big')
-		print("Column number: ", noCols)
+		print("Magic number: ", mNum)		
+		print("Image amount: ", imgNum)		
+		print("Row number: ", noRows)		
+		print("Column number: ", noCols)		
 
 		images = []
 		
@@ -63,21 +36,24 @@ def read_images_from_file(fPath):
 train_images = read_images_from_file('data/train-images-idx3-ubyte.gz')
 #test_images = read_images_from_file('data/t10k-images-idx3-ubyte.gz')
 
+#Set selected image nuumber. Easier than looking where to change it when need to render different one.
+selectedImage = 3
+
 def print_image(i):
 	for r in train_images[i]:
 		for col in r:
 			print('.' if col < 127 else '#', end='')
 		print()	
 		
-print_image(5)
+print_image(selectedImage)
 
 import PIL.Image as pil
-img = train_images[5]
+img = train_images[selectedImage]
 img = np.array(img)
 img = pil.fromarray(img)
 img = img.convert('RGB')
 img.show()
-img.save('2.png')
+img.save('Image_%s.png', selectedImage)
 # f.close()
 # f = gzip.open(dataPath, 'rb')
 # bytes = f.read(8)
