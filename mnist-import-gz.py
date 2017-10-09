@@ -1,10 +1,13 @@
-#Adapted from: 
-#	https://stackoverflow.com/questions/12902540/read-from-a-gzip-file-in-python
+# Mindaugas Vainauskas
+# Year 4 SW Development course
+# Emerging Technologies module
+# GMIT 2017
 
-#import gzip library
+#import libraries needed
 import gzip
 import numpy as np
 import struct
+import PIL.Image as pil
 
 def read_images_from_file(fPath):
 	with gzip.open(fPath, 'rb') as f:
@@ -58,7 +61,6 @@ print("Selected image on screen was %s:" % selectedImage)
 
 #For image saving and rendering I adapted code from:
 #https://stackoverflow.com/questions/34324958/trying-to-create-noise-image-with-noise-numpy-and-image
-import PIL.Image as pil
 
 def save_image(i):
 	img = train_images[i]
