@@ -9,6 +9,20 @@ import numpy as np
 import struct
 import PIL.Image as pil
 
+def read_labels_from_file(fPath):
+	with gzip.open(fPath, 'rb') as f:
+	
+		#This line is adapted from
+		#https://gist.github.com/akesling/5358964#file-mnist-py-L26
+		mNum, labNum = struct.unpack(">II", f.read(8))		
+		print("Magic number: ", mNum)		
+		print("label count: ", labNum)	
+		
+		labels = f.read(4)
+		
+		return labels
+		f.close()
+
 def read_images_from_file(fPath):
 	with gzip.open(fPath, 'rb') as f:
 	
@@ -43,6 +57,8 @@ def read_images_from_file(fPath):
 	return images
 	f.close()
 	
+
+train_labels = read_labels_from_file('data/train-labels-idx1-ubyte.gz')
 train_images = read_images_from_file('data/train-images-idx3-ubyte.gz')
 
 #test_images = read_images_from_file('data/t10k-images-idx3-ubyte.gz')
@@ -55,6 +71,8 @@ def print_image(i):
 		for col in r:
 			print('.' if col < 127 else '#', end='')
 		print()		
+		
+	print(train_labels[i])
 
 
 print("Selected image on screen was %s:" % selectedImage)
@@ -64,10 +82,10 @@ print("Selected image on screen was %s:" % selectedImage)
 
 def save_image(i):
 	img = train_images[i]
-	img = np.asarray(img)
-	img = pil.fromarray(img, mode='RGBA')
+	img = np.asarray(img, dtype=np.float32)
+	img = pil.fromarray(img, mode='RGBA').convert('L', dither = pil.NONE)
 	img.show()
-	img.save('./images/Image_%d.png' % i)
+	img.save('./images/train-%d-%d.png' % (i, train_labels[i]))
 	
 #define function to print and save images in range
 def print_save_range(i, j):
