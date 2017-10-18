@@ -93,12 +93,4 @@ while 1:
 endRange = endRange+1
 
 #run the rendering for given range of images
-print_save_range(startRange, endRange)
-
-	
-	
-	
-	
-	
-	
-	
+print_save_range(startRange, endRange)	
