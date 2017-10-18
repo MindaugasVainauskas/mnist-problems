@@ -60,9 +60,9 @@ def print_image(i):
 			print('.' if col < 127 else '#', end='')
 		print()		
 	print(label_set[i])
-
-
 print("Selected image on screen was %s:" % selectedImage)
+
+
 
 #For image saving and rendering I adapted code from:
 #https://stackoverflow.com/questions/34324958/trying-to-create-noise-image-with-noise-numpy-and-image
@@ -70,7 +70,7 @@ print("Selected image on screen was %s:" % selectedImage)
 def save_image(i):
 	img = image_set[i]
 	img = np.asarray(img, dtype=np.float32)
-	img = pil.fromarray(img, mode='RGBA').convert('L', dither = pil.NONE)
+	img = pil.fromarray((img)**16, mode='RGBA').convert('L', dither = pil.NONE)
 	img.show()
 	img.save('./images/train-%d-%d.png' % (i, label_set[i]))
 	
