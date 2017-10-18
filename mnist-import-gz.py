@@ -18,10 +18,9 @@ def read_labels_from_file(fPath):
 		print("Magic number: ", mNum)		
 		print("label count: ", labNum)	
 		
-		labels = f.read(4)
-		
+		labels = f.read(labNum)	
 		return labels
-		f.close()
+	f.close()
 
 def read_images_from_file(fPath):
 	with gzip.open(fPath, 'rb') as f:
@@ -42,24 +41,13 @@ def read_images_from_file(fPath):
 		buffer = f.read(noRows * noCols * imgNum)
 		images = np.frombuffer(buffer, dtype=np.uint8).astype(np.float32)
 		images = images.reshape(imgNum, noRows, noCols, 1)
-
-		# images = []
-		
-		# for i in range(imgNum):
-			# rows = []
-			# for r in range(noRows):
-				# cols = []
-				# for c in range(noCols):
-					# cols.append(int.from_bytes(f.read(1), 'big'))
-				# rows.append(cols)
-			# images.append(rows)
 		
 	return images
 	f.close()
 	
 
-train_labels = read_labels_from_file('data/train-labels-idx1-ubyte.gz')
-train_images = read_images_from_file('data/train-images-idx3-ubyte.gz')
+label_set = read_labels_from_file('data/train-labels-idx1-ubyte.gz')
+image_set = read_images_from_file('data/train-images-idx3-ubyte.gz')
 
 #test_images = read_images_from_file('data/t10k-images-idx3-ubyte.gz')
 
@@ -67,12 +55,11 @@ train_images = read_images_from_file('data/train-images-idx3-ubyte.gz')
 selectedImage = int(input("Which image to show?: "))
 
 def print_image(i):
-	for r in train_images[i]:
+	for r in image_set[i]:
 		for col in r:
 			print('.' if col < 127 else '#', end='')
 		print()		
-		
-	print(train_labels[i])
+	print(label_set[i])
 
 
 print("Selected image on screen was %s:" % selectedImage)
@@ -81,11 +68,11 @@ print("Selected image on screen was %s:" % selectedImage)
 #https://stackoverflow.com/questions/34324958/trying-to-create-noise-image-with-noise-numpy-and-image
 
 def save_image(i):
-	img = train_images[i]
+	img = image_set[i]
 	img = np.asarray(img, dtype=np.float32)
 	img = pil.fromarray(img, mode='RGBA').convert('L', dither = pil.NONE)
 	img.show()
-	img.save('./images/train-%d-%d.png' % (i, train_labels[i]))
+	img.save('./images/train-%d-%d.png' % (i, label_set[i]))
 	
 #define function to print and save images in range
 def print_save_range(i, j):
